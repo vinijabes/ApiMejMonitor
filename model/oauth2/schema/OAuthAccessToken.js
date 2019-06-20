@@ -9,4 +9,4 @@ var OAuthAccessTokenSchema = new Schema({
   OAuthClient: { type : Schema.Types.ObjectId, ref: 'OAuthClient' },
 });
 
-module.exports = mongoose.model('OAuthAccessToken', OAuthAccessTokenSchema);
+module.exports = mongoose.models.OAuthAccessToken || mongoose.model('OAuthAccessToken', OAuthAccessTokenSchema);

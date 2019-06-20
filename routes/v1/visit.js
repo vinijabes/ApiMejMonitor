@@ -79,4 +79,34 @@ module.exports = (app, authenticate) => {
             })
         }
     })
+
+    app.post('/visit/accompaniment', authenticate(), async (req, res) => {
+        let {_id, ...data} = req.body;
+        let accompaniment = await controller.addAccompaniment(_id, data);
+        
+        if(accompaniment){
+            res.status(200).json({
+                code:200,
+                accompaniment
+            });
+        }else{
+            res.status(500).json({
+                code: 500
+            })
+        }
+    })
+
+    app.get('/visit/accompaniment', authenticate(), async (req, res) => {
+        let accompaniments = await controller.getAccompaniments();
+        if(accompaniments){
+            res.status(200).json({
+                code:200,
+                accompaniments
+            });
+        }else{
+            res.status(500).json({
+                code: 500
+            })
+        }
+    });
 }

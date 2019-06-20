@@ -22,3 +22,11 @@ module.exports.delete = (id) => {
 module.exports.setGoals = (id, data) => {
     return model.setGoals(id, data);
 }
+
+module.exports.addAccompaniment = (id, data) => {
+    return model.addAccompaniment(id, data);
+}
+
+module.exports.getAccompaniments = () => {
+    return model.getAccompaniments();
+}

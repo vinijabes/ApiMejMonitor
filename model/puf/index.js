@@ -69,3 +69,16 @@ module.exports.setGoals = async (id, data) => {
     ej.goals = data;
     return await ej.save();
 }
+
+module.exports.addAccompaniment = async(id, data) => {
+    let visit = await Visit.findById(id).exec();
+    if(visit == null) return false;
+    if(visit.accompaniments) visit.accompaniments.push(data);
+    else visit.accompaniments = [data];
+    return await visit.save();
+}
+
+module.exports.getAccompaniments = async(config = {}) => {
+    let visit = await Visit.find(config).exec();
+    return visit.accompaniments;    
+}
