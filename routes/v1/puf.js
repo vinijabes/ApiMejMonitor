@@ -7,7 +7,6 @@ module.exports = (app, authenticate) => {
         if(req.file) data.imgPath = req.file.path;
         
         let ej = await controller.create(data);
-        console.log("Requestttt");
         if(ej){
             res.status(201).json({
                 code: 201,
@@ -55,7 +54,7 @@ module.exports = (app, authenticate) => {
         }        
     });
 
-    app.get('/puf/ej', async (req, res) => {
+    app.get('/puf/ej', authenticate(), async (req, res) => {
         let ejs = await controller.get();
         if(ejs){
             res.status(200).json({
@@ -85,6 +84,21 @@ module.exports = (app, authenticate) => {
 
     app.delete('/puf/ej/:id', authenticate(), async (req, res) => {
         let result = await controller.delete(req.params.id);
+        if(result){
+            res.status(200).json({
+                code:200
+            })
+        }else{
+            res.status(500).json({
+                code:500
+            })
+        }
+    })
+
+    app.post('/puf/ej/project', authenticate(), async (req, res) => {
+        console.log(req.body);
+        let {_id, ...data} = req.body;        
+        let result = await controller.addProject(_id, data);
         if(result){
             res.status(200).json({
                 code:200

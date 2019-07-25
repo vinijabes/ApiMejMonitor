@@ -82,3 +82,14 @@ module.exports.getAccompaniments = async(config = {}) => {
     let visit = await Visit.find(config).exec();
     return visit.accompaniments;    
 }
+
+module.exports.addProject = async(id, data) => {
+    if(!id) return false;    
+    let ej = await Ej.findById(id).exec();
+    if(ej == null) return false;
+    console.log(ej);
+    if(ej.madeProjects) ej.madeProjects.push(data);
+    else ej.madeProjects = [data];
+    console.log(ej);
+    return await ej.save();
+}

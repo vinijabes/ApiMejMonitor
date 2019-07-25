@@ -1,4 +1,4 @@
-let model = require('../../model/puf');
+let model = require('../../model/document');
 
 module.exports.create = (data) => {
     return model.create(data);
@@ -21,6 +21,11 @@ module.exports.delete = (id) => {
     return model.delete(id);
 }
 
-module.exports.setGoals = (id, data) => {
-    return model.setGoals(id, data);
+module.exports.addSection = (id, data) => {
+    if(data.subSectionId){
+        let {subSectionId, ...subSectionData} = data;
+        return model.addSubSection(id, subSectionId, subSectionData);
+    }else{
+        return model.addSection(id, data);
+    }
 }
