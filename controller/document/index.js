@@ -29,3 +29,22 @@ module.exports.addSection = (id, data) => {
         return model.addSection(id, data);
     }
 }
+
+module.exports.updateSection = (id, data) => {
+    console.log(data);
+    if(data.sectionId){
+        return model.updateSection(id, data.sectionId, data);
+    }
+}
+
+module.exports.addAlias = (id, data) => {
+    return model.addAlias(id, data);
+}
+
+module.exports.updateAlias = (id, data) => {
+    return model.updateAlias(id, data.aliasId, data);
+}
+
+module.exports.deleteAlias = (id, aliasId) => {    
+    return model.deleteAlias(id,aliasId);
+}

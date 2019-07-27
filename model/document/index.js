@@ -48,3 +48,48 @@ module.exports.addSubSection = async(id, sectionId, data) => {
     
     return await doc.save();   
 }
+
+module.exports.updateSection = async(id, sectionId, data) => {
+    let doc = await Document.findById(id).exec();
+    
+    if(!doc) return null;
+    section = doc.sections.id(sectionId);
+
+    if(!section) return null;
+    section.set(data);
+
+    return await doc.save();
+}
+
+module.exports.addAlias = async(id, data) => {
+    let doc = await Document.findById(id).exec();
+    
+    if(!doc) return null;
+    doc.aliases.push(data);
+    
+    return await doc.save();
+}
+
+module.exports.updateAlias = async(id, aliasId, data) => {
+    let doc = await Document.findById(id).exec();
+    
+    if(!doc) return null;    
+    alias = doc.aliases.id(aliasId);
+
+    if(!alias) return null;
+    alias.set(data);
+    
+    return await doc.save();
+}
+
+module.exports.deleteAlias = async(id, aliasId) => {    
+    let doc = await Document.findById(id).exec();
+
+    if(!doc) return null;    
+    alias = doc.aliases.id(aliasId);
+
+    if(!alias) return null;
+    doc.aliases.splice(doc.aliases.indexOf(alias), 1);
+
+    return !!doc.save();
+}

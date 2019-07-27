@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 var SectionSchema = new Schema();
 SectionSchema.add({
   title: String,
-  description: String,
+  description: mongoose.Schema.Types.Mixed,
   subSections: [SectionSchema]
 });
 
