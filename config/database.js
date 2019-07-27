@@ -1,11 +1,12 @@
 let mongoose = require('mongoose');
-// mongoose.connect(
-//     'mongodb://api_user:dvora1@ds249583.mlab.com:49583/dvora',
-//     {useNewUrlParser: true}
-// );
+
+const db_user = process.env.DB_USER;
+const db_password = process.env.DB_PASS;
+const db_hostname = process.env.DB_HOSTNAME;
+const db_collection = process.env.DB_COLLECTION;
 
 mongoose.connect(
-    'mongodb://api_user:teste_123@localhost/expande',
+    `mongodb://${db_user}:${db_password}@${db_hostname}/${db_collection}`,
     {useNewUrlParser: true}
 );
 
