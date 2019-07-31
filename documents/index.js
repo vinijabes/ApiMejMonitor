@@ -1,6 +1,6 @@
 var path = require('path');
 console.log(path.resolve(__dirname + '/Arial.woff'));
-module.exports = ({html}) => {
+module.exports = (html) => {
 return `
     <!doctype html>
     <html>
@@ -8,6 +8,11 @@ return `
           <meta charset="utf-8">
           <title>PDF Result Template</title>          
           <style>
+
+            @font-face {
+                font-family: Arial;
+                src: url(Arial.woff);
+            }
 
             body{
                 font-family: Arial;

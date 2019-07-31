@@ -1,6 +1,4 @@
 let controller = require('../../controller/document');
-let pdfTemplate = require('../../documents');
-let pdf = require('html-pdf');
 var path = require('path');
 
 module.exports = (app, authenticate) => {
@@ -77,6 +75,19 @@ module.exports = (app, authenticate) => {
         } else {
             res.status(500).json({
                 code: 200
+            })
+        }
+    });
+
+    app.delete('/document/:id/section/:sectionId', authenticate(), async (req, res) => {
+        let result = await controller.deleteSection(req.params.id, req.params.sectionId);
+        if (result) {
+            res.status(200).json({
+                code: 200
+            })
+        } else {
+            res.status(500).json({
+                code: 500
             })
         }
     });
@@ -159,20 +170,15 @@ module.exports = (app, authenticate) => {
         }
     });
 
-    app.post('/document/create-pdf', (req, res) => {
-        pdf.create(pdfTemplate(req.body), {
-            format: 'A4',
-            orientation: 'portrait',
-            border: {
-                "top": "2.5cm",            // default is 0, units: mm, cm, in, px
-                "right": "3cm",
-                "bottom": "2.5cm",
-                "left": "3cm"
-            },
-        }).toFile('./public/uploads/resultado.pdf', (err) => {
-            if (err) return console.log('error');
-            res.send(Promise.resolve())
-        })
+    app.post('/document/create-pdf', async (req, res) => {
+        let pdf = await controller.createDocPdfFromDocument(req.body._id);
+        if(pdf){
+            res.status(200).send(pdf);
+        }else{
+            res.status(500).json({
+                code: 500
+            });
+        }
     })
 
     

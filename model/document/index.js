@@ -61,6 +61,14 @@ module.exports.updateSection = async(id, sectionId, data) => {
     return await doc.save();
 }
 
+module.exports.deleteSection = async(id, sectionId) => {
+    let doc = await Document.findById(id).exec();
+    if(!doc) return null;
+    doc.sections.id(sectionId).remove();
+
+    return !!await doc.save();
+}
+
 module.exports.addAlias = async(id, data) => {
     let doc = await Document.findById(id).exec();
     
