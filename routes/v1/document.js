@@ -17,8 +17,8 @@ module.exports = (app, authenticate) => {
         }
     });
 
-    app.get('/document/fetch-pdf', (req, res) => {
-        res.sendFile(path.resolve(`${__dirname}/../../public/uploads/resultado.pdf`));
+    app.get('/document/fetch-pdf/:id', (req, res) => {
+        res.sendFile(path.resolve(`${__dirname}/../../public/uploads/${req.params.id}.pdf`));
     });
 
     app.get('/document', authenticate(), async (req, res) => {
