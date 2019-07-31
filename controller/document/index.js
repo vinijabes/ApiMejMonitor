@@ -132,5 +132,5 @@ module.exports.pdfTemplate = async (id) => {
         return null;
     }
 
-    return documentReplacement(document);
+    return pdfTemplate(documentReplacement(document));
 }
