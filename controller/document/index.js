@@ -94,6 +94,8 @@ const documentReplacement = (document) => {
         html += replacedSection.html;
         article = replacedSection.article;
     }    
+
+    return html;
 }
 
 const sectionReplacement = (section, aliases, article) => {
