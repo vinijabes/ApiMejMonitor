@@ -21,6 +21,10 @@ module.exports = (app, authenticate) => {
         res.sendFile(path.resolve(`${__dirname}/../../public/uploads/${req.params.id}.pdf`));
     });
 
+    app.get('/document/fetch-pdf-html/:id', async (req, res) => {
+        res.send(await controller.pdfTemplate(req.params.id));
+    });
+
     app.get('/document', authenticate(), async (req, res) => {
         let documents = await controller.get();
         if (documents) {

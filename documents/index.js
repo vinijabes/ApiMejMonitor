@@ -11,7 +11,7 @@ return `
 
             @font-face {
                 font-family: Arial;
-                src: url(Arial.woff);
+                src: url(${path.resolve(__dirname+'/Montserrat.otf')});
             }
 
             body{

@@ -124,3 +124,13 @@ const sectionReplacement = (section, aliases, article) => {
 
     return {html: description, article};
 }
+
+module.exports.pdfTemplate = async (id) => {
+    let document = await model.getOneById(id);
+    if(!document) {
+        resolve(false);
+        return null;
+    }
+
+    return documentReplacement(document);
+}
