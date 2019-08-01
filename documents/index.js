@@ -11,7 +11,7 @@ return `
 
             @font-face {
                 font-family: Arial;
-                src: url('${path.resolve(__dirname+'/Arial.woff')}');
+                src: url('http://74.117.153.203:5015/public/arial.ttf');
             }
 
             body{
