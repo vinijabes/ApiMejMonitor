@@ -188,8 +188,13 @@ module.exports.syncCityIes = async () => {
                 let regexUniversityCode = /\([0-9]*\)/g;
 
                 if (!iesName) { console.log(c._id, c.name); continue; };
-
-                let universityCode = regexUniversityCode.exec(iesName)[0];
+                let universityCode
+                try{
+                    universityCode = regexUniversityCode.exec(iesName)[0];
+                }catch(err){
+                    console.log(iesName);
+                    continue;
+                }
                 let data = {
                     _id: universityCode.replace(/[()]/g, ''),
                     name: iesName,
