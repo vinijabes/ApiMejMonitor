@@ -165,7 +165,7 @@ module.exports.syncCityIes = async () => {
 
         let cities = await getCity(null);
         for (let c of cities) {
-            html = await requestIesHtml(3520442);
+            html = await requestIesHtml(c._id);
     
             const root = HTMLParser.parse(html);
 
