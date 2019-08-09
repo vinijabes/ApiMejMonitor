@@ -143,11 +143,13 @@ var fetchCampi = async (iesCode) => {
     for(let row of rows){
         let columns = row.querySelectorAll('td');
         let campiCode = columns[0].structuredText;
+        let campiName = columns[1].structuredText;
         let city = columns[4].structuredText;
         try{
 
             campus.push({
                 _id: campiCode,
+                name: campiName,
                 city: (await model.getOneCityByName(city))._id,            
                 courses: await insertNewCourses(await fetchCourse(iesCode, campiCode))
             });        

@@ -12,6 +12,7 @@ dadosIesSchema.add({
 var campiSchema = new Schema();
 campiSchema.add({
   _id: Number,
+  name: String,
   city: {type: Number, ref: 'City'},
   courses: [{type: Schema.Types.ObjectId, ref: 'Course'}]
 })
