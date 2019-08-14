@@ -56,7 +56,7 @@ module.exports.deleteAlias = (id, aliasId) => {
     return model.deleteAlias(id,aliasId);
 }
 
-module.exports.createDocPdfFromDocument = (id, newFile) => {
+module.exports.createDocPdfFromDocument = (id,{ newFile, aliases}) => {
     return new Promise(async (resolve, reject) => {
         let document = await model.getOneById(id);
         if(!document) {
@@ -68,6 +68,8 @@ module.exports.createDocPdfFromDocument = (id, newFile) => {
         if(!newFile) filename = id;
         else filename = uuidv4();
 
+        if(aliases) document.aliases = aliases;
+
         pdf.create(pdfTemplate(documentReplacement(document)), {
             format: 'A4',
             orientation: 'portrait',
@@ -77,7 +79,7 @@ module.exports.createDocPdfFromDocument = (id, newFile) => {
                 "bottom": "2.5cm",
                 "left": "3cm"
             }
-        }).toFile(`./public/uploads/${id}.pdf`, (err, res) => {
+        }).toFile(`./public/uploads/teste.pdf`, (err, res) => {
             if (err) return console.log('error');
             resolve(res.filename);
         })        

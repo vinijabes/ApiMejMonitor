@@ -18,7 +18,9 @@ module.exports = (app, authenticate) => {
 
     app.get('/ies/sync', compression(), async (req, res) => {
         let result = await controller.syncCityIes();
-        if (result) {            
+        if (result) { 
+            res.send(result);
+            return;           
             res.status(201).json({
                 code: 200,
                 cities: result

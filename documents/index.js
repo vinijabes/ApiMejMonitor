@@ -18,6 +18,10 @@ return `
                 font-family: Arial;
             }
 
+            body > p {
+                white-space: pre-wrap
+            }
+
             p, li, ul{
                 min-height: 1.15em;
                 line-height: 1.15em;

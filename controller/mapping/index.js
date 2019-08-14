@@ -167,7 +167,7 @@ module.exports.syncCityIes = async () => {
 
         let cities = await getCity(null);
         for (let c of cities) {
-            html = await requestIesHtml(c._id);
+            html = await requestIesHtml(3535507);
     
             const root = HTMLParser.parse(html);
 
@@ -209,7 +209,8 @@ module.exports.syncCityIes = async () => {
                 await model.createIes(data)
                 await fetchIesData(universityCode.replace(/[()]/g, ''));
                 await fetchCampi(universityCode.replace(/[()]/g, ''));
-            }          
+            }     
+            return html;     
         }
         return true;
     } catch (err) {

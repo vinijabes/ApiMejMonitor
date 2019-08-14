@@ -175,7 +175,7 @@ module.exports = (app, authenticate) => {
     });
 
     app.post('/document/create-pdf', async (req, res) => {
-        let pdf = await controller.createDocPdfFromDocument(req.body._id);
+        let pdf = await controller.createDocPdfFromDocument(req.body._id, {aliases: req.body.aliases});
         if(pdf){
             res.status(200).send(pdf);
         }else{
