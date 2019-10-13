@@ -27,12 +27,21 @@ module.exports.deleteCity = (id) => {
     return model.delete(id);
 }
 
+function timeout(callback, ms) {
+    return new Promise((resolve, reject) => setTimeout(callback(resolve, reject), ms));
+}
+
 module.exports.syncCities = async () => {
     try {
         let result = await axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados/35/municipios');
-        await model.dropCity();
-        for (let city of result.data) {
-            await model.createCity({ _id: city.id, name: city.nome });
+        //await model.dropCity();
+        let i = 0;
+        for (let city of result.data) {                
+            console.log(`${city.nome}(${++i})`);
+            let location = (await axios.get(`https://geocoder.api.here.com/6.2/geocode.json?searchtext=${require('querystring').escape(city.nome+" São Paulo")}&app_id=mVuyckAlOQKyJq0ezhUh&app_code=z9tAGzBRpWlsxqKKaF2v5w&gen=8`)).data;
+            var latlng;
+            latlng = location.Response.View[0].Result[0].Location.DisplayPosition;                
+            await model.createCity({ _id: city.id, name: city.nome, location: {lat: latlng.Latitude, lng: latlng.Longitude} });                                
         }
         return true;
     } catch (err) {
@@ -166,8 +175,8 @@ module.exports.syncCityIes = async () => {
     try {
 
         let cities = await getCity(null);
-        for (let c of cities) {
-            html = await requestIesHtml(3535507);
+        for (let c of cities) {            
+            html = await requestIesHtml(c._id);
     
             const root = HTMLParser.parse(html);
 
@@ -210,7 +219,6 @@ module.exports.syncCityIes = async () => {
                 await fetchIesData(universityCode.replace(/[()]/g, ''));
                 await fetchCampi(universityCode.replace(/[()]/g, ''));
             }     
-            return html;     
         }
         return true;
     } catch (err) {
@@ -224,6 +232,14 @@ module.exports.getCityIes = async (id, filter = {}, config = {}) => {
     else return {
         data: await model.getCityIes(filter, config),
         total: await model.getCityIesCount(filter)
+    }
+}
+
+module.exports.getCityIesByRegion = async (id, filter = {}, config = {}) => {
+    let data = await model.getCityIesByRegion(id, filter, config) 
+    return {
+        data,
+        total: data.length
     }
 }
 

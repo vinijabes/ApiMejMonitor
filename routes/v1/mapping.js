@@ -2,7 +2,7 @@ let controller = require('../../controller/mapping');
 var compression = require('compression')
 
 module.exports = (app, authenticate) => {
-    app.get('/city/sync', authenticate(), async (req, res) => {
+    app.get('/city/sync', async (req, res) => {
         let result = await controller.syncCities();
 
         if (result) {
@@ -19,8 +19,6 @@ module.exports = (app, authenticate) => {
     app.get('/ies/sync', compression(), async (req, res) => {
         let result = await controller.syncCityIes();
         if (result) { 
-            res.send(result);
-            return;           
             res.status(201).json({
                 code: 200,
                 cities: result
@@ -53,7 +51,7 @@ module.exports = (app, authenticate) => {
         if(result){
             res.status(201).json({
                 code: 200,
-                ies: result
+                ...result
             })
         } else{
             res.status(500).json({

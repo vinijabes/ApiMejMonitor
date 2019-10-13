@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 var City = require('./schema').City;
 var Ies = require('./schema').Ies;
 var Course = require('./schema').Course;
@@ -71,7 +72,7 @@ module.exports.getOneCityIesById = async (id) => {
     return await Ies.findById(id).exec();
 }
 
-const getCityIesByRegion = async (config = {}) => {
+const getCityIesByRegion = async (id, filter = {}) => {
     return await City.populate(
         await Course.populate(
             await Ies.aggregate([
@@ -111,7 +112,7 @@ const getCityIesByRegion = async (config = {}) => {
                             {
                                 $match: {
                                     $expr: {
-                                        $and: [
+                                        $and: [                                            
                                             { $in: ['$$city_id', '$cities'] }
                                         ]
                                     }
@@ -144,7 +145,7 @@ const getCityIesByRegion = async (config = {}) => {
                 }
             ]),
             { path: 'campus.courses', select: 'name -_id' }),
-        { path: 'campus.city', select: 'name -_id' })
+        { path: 'campus.city', select: 'name location -_id' })
 }
 
 module.exports.getCityIesByRegion = getCityIesByRegion;

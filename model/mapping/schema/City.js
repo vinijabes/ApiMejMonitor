@@ -4,6 +4,10 @@ const Schema = mongoose.Schema;
 var CitySchema = new Schema();
 CitySchema.add({
   name: String,
+  location: {
+    lat: Number,
+    lng: Number
+  },
   _id: Number,
 });
 
