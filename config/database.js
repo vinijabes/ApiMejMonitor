@@ -1,7 +1,11 @@
-let mongoose = require('mongoose');
-mongoose.connect(
-    'mongodb://api_user:dvora1@ds249583.mlab.com:49583/dvora',
-    {useNewUrlParser: true}
-);
+var mysql = require('mysql2'); 
 
-module.exports = mongoose;
+var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "gimenes1",
+    database: "trabalhoBanco"
+});
+
+
+module.exports = con;

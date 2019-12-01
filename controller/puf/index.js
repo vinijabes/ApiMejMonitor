@@ -4,6 +4,10 @@ module.exports.create = (data) => {
     return model.create(data);
 }
 
+module.exports.addProject = (id, data) => {
+    return model.addProject(id, data);
+}
+
 module.exports.get = (id, config={}) => {
     if(id) return model.getOneById(id);
     else return model.get(config);
