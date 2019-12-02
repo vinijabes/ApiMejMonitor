@@ -2,6 +2,7 @@ const con = require('../../config/database');
 var Ej = require('./schema').Ej;
 var Visit = require('./schema').Visit;
 var fs = require('fs');
+var dateFormat = require('dateformat');
 
 module.exports.create = async (data) => {
     let ies = (await con.promise().query("SELECT id_ies FROM Ies WHERE name = ?", [data.ies]))[0][0].id_ies;
@@ -39,10 +40,10 @@ module.exports.getOneById = async (id) => {
 module.exports.update = async (id, data) => {
     let ies = (await con.promise().query("SELECT id_ies FROM Ies WHERE name = ?", [data.ies]))[0][0].id_ies;
     let ej = (await con.promise().query("SELECT *, img_path as imgPath FROM Ej WHERE cod_ej = ?", [id]))[0][0];
-    try {        
+    try {
         if (ej.imgPath && data.imgPath) {
             fs.unlinkSync(ej.imgPath);
-        } else if(ej.imgPath) {
+        } else if (ej.imgPath) {
             data.imgPath = ej.imgPath
         }
     } catch (err) {
@@ -76,14 +77,44 @@ module.exports.createVisit = async (data) => {
 
 module.exports.getVisits = async (config = {}) => {
     let result = (await con.promise().query("SELECT *, cod_ej as ej FROM Visit WHERE cod_ej = ?", [config.ej]))[0];
+    for (let elem of result) {
+        let id = {
+            data: elem.date.getTime(),
+            codEj: elem.ej
+        };
+
+        id = JSON.stringify(id);
+        elem._id = Buffer.alloc(id.length, id, 'utf8').toString('base64');
+    }
     return result;
 }
 
 module.exports.getOneVisitById = async (id) => {
-    return null; await Visit.findById(id).exec();
+    id = Buffer.alloc(id.length - 12, id, 'base64').toString('utf8');
+    console.log(id);
+    id = JSON.parse(id);
+    id.data = dateFormat(new Date(id.data), "yyyy-mm-dd h:MM:ss");
+
+    let result = (await con.promise().query("SELECT *, cod_ej as ej FROM Visit WHERE cod_ej = ? AND DATE(date) = DATE(?)", [id.codEj, id.data]))[0];
+    console.log(result, `SELECT *, cod_ej as ej FROM Visit WHERE cod_ej =${id.codEj} AND date = ${id.data}`);
+    return result[0];
 }
 
 module.exports.updateVisit = async (id, data) => {
+    id = Buffer.alloc(id.length - 12, id, 'base64').toString('utf8');
+    id = JSON.parse(id);
+    id.data = new Date(id.data).toLocaleString().
+        replace(/T/, ' ').      // replace T with a space
+        replace(/\..+/, '').
+        replace('AM', '');
+
+    data.date += " 00:00:00";
+    console.log(data, id);
+    let result = (
+        await con.promise().query("UPDATE Visit SET date = ?, cod_ej = ?, cnpj_instance = ?, responsible = ?, reason = ? WHERE cod_ej = ? AND DATE(date) = DATE(?)", [data.date, id.codEj, '33.164.213/0001-08', data.responsible, data.reason, id.codEj, id.data])
+    );
+    return result;
+
     let visit = await Visit.findById(id).exec();
     visit.set(data);
     return await visit.save();
