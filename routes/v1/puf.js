@@ -38,10 +38,9 @@ module.exports = (app, authenticate) => {
     })
 
     app.post('/puf/ej/goal', authenticate(), async (req, res) => {
-        let {_id, ...data} = req.body;
-        console.log(req.body)
+        let {_id, ...data} = req.body;        
         let ej = await controller.setGoals(_id, data.data);
-        console.log("Requestttt");
+        
         if(ej){
             res.status(201).json({
                 code: 201,
@@ -54,8 +53,10 @@ module.exports = (app, authenticate) => {
         }        
     });
 
-    app.get('/puf/ej', authenticate(), async (req, res) => {
-        let ejs = await controller.get();
+    app.get('/puf/ej', async (req, res) => {
+        let ejs = (await controller.get()).map((elem) => {
+            return {...elem, _id: elem.cod_ej}
+        });
         if(ejs){
             res.status(200).json({
                 code: 200,
