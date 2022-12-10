@@ -19,7 +19,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "draftjs-to-html": "^0.8.4",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-oauth-server": "^2.0.0",
     "form-data": "^2.5.0",
     "get-port": "^5.0.0",
